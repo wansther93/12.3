@@ -361,11 +361,11 @@ export const SocialCardGeneratorModal: React.FC<SocialCardGeneratorModalProps> =
       onClick={onClose}
     >
       <div
-        className="w-full max-w-lg bg-[#07070a] border border-white/10 rounded-3xl shadow-2xl overflow-hidden flex flex-col my-auto pointer-events-auto"
+        className="w-full max-w-lg bg-black border border-white/10 rounded-3xl shadow-2xl overflow-hidden flex flex-col my-auto pointer-events-auto max-h-[92vh]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Top Header do Modal */}
-        <div className="px-4 sm:px-5 py-3 border-b border-white/[0.08] flex items-center justify-between bg-black/60 shrink-0">
+        <div className="px-4 sm:px-5 py-3 border-b border-white/[0.08] flex items-center justify-between bg-black shrink-0">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-400 to-amber-600 flex items-center justify-center text-slate-950 font-black shadow-md shadow-amber-500/20">
               <Share2 className="w-4 h-4 stroke-[2.5]" />
@@ -392,10 +392,10 @@ export const SocialCardGeneratorModal: React.FC<SocialCardGeneratorModalProps> =
           </button>
         </div>
 
-        {/* Corpo do Modal com Visualizador Centralizado */}
-        <div className="p-3 sm:p-5 flex flex-col items-center justify-center bg-black/40 overflow-y-auto max-h-[72vh]">
+        {/* Corpo do Modal com Visualizador com Rolagem Fluída de Ponta a Ponta */}
+        <div className="p-3 sm:p-5 flex flex-col items-center flex-1 overflow-y-auto overscroll-contain bg-black/50 scroll-smooth">
           {/* Card Preview Container com proporção estrita 9:16 (504px x 896px no DOM de captura) */}
-          <div className="relative w-full max-w-[370px] sm:max-w-[400px] shadow-[0_0_50px_rgba(0,0,0,0.9)] rounded-3xl overflow-hidden border border-white/15">
+          <div className="relative w-full max-w-[360px] sm:max-w-[390px] shadow-[0_0_50px_rgba(0,0,0,0.9)] rounded-3xl overflow-hidden border border-white/15 my-auto shrink-0 mb-4">
             
             {/* O Elemento Real que é fotografado pelo html-to-image */}
             <div
@@ -757,7 +757,7 @@ export const SocialCardGeneratorModal: React.FC<SocialCardGeneratorModalProps> =
         )}
 
         {/* Rodapé do Modal com Botões de Ação */}
-        <div className="p-3 sm:p-4 border-t border-white/[0.08] bg-black/60 flex items-center justify-end gap-2.5 shrink-0">
+        <div className="p-3 sm:p-4 border-t border-white/[0.08] bg-black flex items-center justify-end gap-2.5 shrink-0">
           <button
             type="button"
             onClick={onClose}

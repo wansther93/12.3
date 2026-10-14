@@ -20,6 +20,9 @@ interface HeaderProps {
   onOpenImageSearch?: () => void;
   onOpenSocialCard?: () => void;
   onOpenCommandPalette?: () => void;
+  isSettingsOpen?: boolean;
+  onOpenSettings?: () => void;
+  onCloseSettings?: () => void;
   watchingCount: number;
   totalCount: number;
   otakuLevel?: {
@@ -44,9 +47,24 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenImageSearch,
   onOpenSocialCard,
   onOpenCommandPalette,
+  isSettingsOpen,
+  onOpenSettings,
+  onCloseSettings,
   otakuLevel,
 }) => {
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [internalSettingsOpen, setInternalSettingsOpen] = useState(false);
+  const effectiveSettingsOpen = isSettingsOpen !== undefined ? isSettingsOpen : internalSettingsOpen;
+
+  const handleOpenSettings = () => {
+    if (onOpenSettings) onOpenSettings();
+    else setInternalSettingsOpen(true);
+  };
+
+  const handleCloseSettings = () => {
+    if (onCloseSettings) onCloseSettings();
+    else setInternalSettingsOpen(false);
+  };
+
   const [isVisible, setIsVisible] = useState(true);
   const [pullDistance, setPullDistance] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
@@ -64,13 +82,13 @@ export const Header: React.FC<HeaderProps> = ({
       clearTimeout(hideTimerRef.current);
     }
     // Não esconde enquanto modal de ajustes estiver aberto
-    if (isSettingsOpen) return;
+    if (effectiveSettingsOpen) return;
 
     hideTimerRef.current = setTimeout(() => {
       setIsVisible(false);
       setPullDistance(0);
     }, 4000);
-  }, [isSettingsOpen]);
+  }, [effectiveSettingsOpen]);
 
   // Mostrar o banner e reiniciar contagem regressiva de 4 segundos
   const showBanner = useCallback(() => {
@@ -344,7 +362,7 @@ export const Header: React.FC<HeaderProps> = ({
               <button
                 id="btn-header-menu"
                 type="button"
-                onClick={() => setIsSettingsOpen(true)}
+                onClick={handleOpenSettings}
                 title="Configurações, Notificações, Backup e Conta"
                 className="p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl bg-black/85 hover:bg-slate-900 border border-white/20 hover:border-indigo-400 text-white backdrop-blur-md transition-all flex items-center gap-1.5 text-xs font-bold shadow-lg cursor-pointer active:scale-95"
               >
@@ -359,8 +377,8 @@ export const Header: React.FC<HeaderProps> = ({
 
       {/* Modal Unificado de Configurações */}
       <SettingsModal
-        isOpen={isSettingsOpen}
-        onClose={() => setIsSettingsOpen(false)}
+        isOpen={effectiveSettingsOpen}
+        onClose={handleCloseSettings}
         user={user}
         customAvatarUrl={customAvatarUrl}
         onOpenAvatarModal={onOpenAvatarModal}

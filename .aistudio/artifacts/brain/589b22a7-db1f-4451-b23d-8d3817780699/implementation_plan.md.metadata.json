@@ -1,6 +1,6 @@
 {
-  "summary": "Implementação concluída: calibração dos títulos de Elenco e Músicas na Ficha Técnica para caberem em uma única linha e redesenho minimalista do Modal da Engrenagem com zero containers aninhados, fundo preto puro e botões amplos de ação direta.",
-  "updatedAt": "2026-10-14T16:49:46.431367842Z",
+  "summary": "Ajustes concluídos com sucesso:\n1. Botão verde do banner de perfil agora dispara compartilhamento nativo ou copia link direto sem abrir o modal de Stories.\n2. Preview do Card de Perfil (9:16) com rolagem fluida e completa, permitindo ver Top 5, 5 insígnias e rodapé.\n3. Modal de Compartilhar Lista modernizado em preto puro (bg-black), compacto, sem caixas aninhadas e sem scroll infinito.\n4. Modal de Identificar Cena (Trace.moe) com cabeçalho compacto, visual preto profundo e resultados elegantes.\n5. Retorno automático e suave para a engrenagem ao fechar os modais acionados a partir dela.",
+  "updatedAt": "2026-10-14T18:35:34.458179782Z",
   "requestFeedback": true,
   "userFacing": true
 }

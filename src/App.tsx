@@ -298,6 +298,8 @@ export default function App() {
   const [isImageSearchModalOpen, setIsImageSearchModalOpen] = useState(false);
   const [isSocialCardModalOpen, setIsSocialCardModalOpen] = useState(false);
   const [socialCardInitialType, setSocialCardInitialType] = useState<CardType>('top5');
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [openedFromSettings, setOpenedFromSettings] = useState<'share' | 'imageSearch' | 'socialCard' | null>(null);
 
   const handleOpenSocialCard = (type: CardType = 'top5') => {
     setSocialCardInitialType(type);
@@ -1462,13 +1464,25 @@ export default function App() {
       <Header
         user={user}
         customAvatarUrl={customAvatarUrl}
+        isSettingsOpen={isSettingsOpen}
+        onOpenSettings={() => setIsSettingsOpen(true)}
+        onCloseSettings={() => setIsSettingsOpen(false)}
         onOpenAvatarModal={handleOpenAvatarModal}
         onLogout={handleLogout}
         onOpenBackup={() => setIsBackupOpen(true)}
         onOpenInstallModal={() => setIsInstallModalOpen(true)}
-        onOpenShareModal={() => setIsShareModalOpen(true)}
-        onOpenImageSearch={() => setIsImageSearchModalOpen(true)}
-        onOpenSocialCard={() => setIsSocialCardModalOpen(true)}
+        onOpenShareModal={() => {
+          setOpenedFromSettings('share');
+          setIsShareModalOpen(true);
+        }}
+        onOpenImageSearch={() => {
+          setOpenedFromSettings('imageSearch');
+          setIsImageSearchModalOpen(true);
+        }}
+        onOpenSocialCard={() => {
+          setOpenedFromSettings('socialCard');
+          setIsSocialCardModalOpen(true);
+        }}
         watchingCount={counts.watching}
         totalCount={counts.all}
         otakuLevel={otakuLevelData}
@@ -1891,7 +1905,13 @@ export default function App() {
       {/* Share List & Public Profile Modal */}
       <ShareListModal
         isOpen={isShareModalOpen}
-        onClose={() => setIsShareModalOpen(false)}
+        onClose={() => {
+          setIsShareModalOpen(false);
+          if (openedFromSettings === 'share') {
+            setOpenedFromSettings(null);
+            setIsSettingsOpen(true);
+          }
+        }}
         userId={user?.uid || ''}
         userName={user?.displayName || 'Otaku'}
         avatarUrl={customAvatarUrl || user?.photoURL || undefined}
@@ -1904,7 +1924,13 @@ export default function App() {
       {/* Identificador de Cenas de Anime por Imagem (trace.moe) */}
       <ImageAnimeSearchModal
         isOpen={isImageSearchModalOpen}
-        onClose={() => setIsImageSearchModalOpen(false)}
+        onClose={() => {
+          setIsImageSearchModalOpen(false);
+          if (openedFromSettings === 'imageSearch') {
+            setOpenedFromSettings(null);
+            setIsSettingsOpen(true);
+          }
+        }}
         onSelectAnimeForAdd={(title) => handleAddFromExplorer({ title })}
         onOpenDetails={(title) => {
           const matched = animes.find((a) => a.title.toLowerCase() === title.toLowerCase());
@@ -1916,7 +1942,13 @@ export default function App() {
       {/* Gerador de Cards / Stories para Redes Sociais */}
       <SocialCardGeneratorModal
         isOpen={isSocialCardModalOpen}
-        onClose={() => setIsSocialCardModalOpen(false)}
+        onClose={() => {
+          setIsSocialCardModalOpen(false);
+          if (openedFromSettings === 'socialCard') {
+            setOpenedFromSettings(null);
+            setIsSettingsOpen(true);
+          }
+        }}
         animes={animes}
         userProfile={currentUserProfile}
         userName={currentUserProfile?.publicUsername || user?.displayName || 'Otaku'}

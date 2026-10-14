@@ -627,18 +627,31 @@ export const OtakuProfileView: React.FC<OtakuProfileViewProps> = ({
     };
   };
 
-  // Compartilhar / Gerar Card do Perfil
+  // Compartilhar Perfil: atalho direto para compartilhar via menu nativo ou copiar link público
   const handleShareProfile = async () => {
-    if (onOpenSocialCard) {
-      onOpenSocialCard();
-      return;
-    }
     const nick =
       currentDisplayedProfile?.publicUsername ||
       currentDisplayedProfile?.userId ||
       currentUserId ||
       '';
     const shareUrl = `${window.location.origin}/?share=${encodeURIComponent(nick)}`;
+    const displayName = currentDisplayedProfile?.displayName || nick || 'Otaku';
+    const title = `Perfil de ${displayName} - WAnime`;
+    const text = `Confira o perfil de ${displayName} no WAnime!`;
+
+    if (typeof navigator !== 'undefined' && navigator.share) {
+      try {
+        await navigator.share({
+          title,
+          text,
+          url: shareUrl,
+        });
+        return;
+      } catch (err: any) {
+        if (err?.name === 'AbortError') return;
+      }
+    }
+
     await copyToClipboard(shareUrl);
     setCopiedLink(true);
     setTimeout(() => setCopiedLink(false), 2500);
