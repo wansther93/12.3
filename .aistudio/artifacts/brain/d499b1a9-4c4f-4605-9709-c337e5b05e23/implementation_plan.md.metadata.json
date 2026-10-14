@@ -1,0 +1,6 @@
+{
+  "summary": "Plano de modernização da aba de Progresso na Ficha Técnica (AnimeDetailModal). Elimina o confuso botão 'Assistir', substitui por 'Definir como Atual', adiciona botões intuitivos de 'Marcar Concluída' com feedback verde, transforma a linha do tempo em cards escuros flutuantes interativos no fundo preto e reformula o controle de episódios da temporada atual.",
+  "updatedAt": "2026-10-13T16:24:35.727841326Z",
+  "requestFeedback": true,
+  "userFacing": true
+}
