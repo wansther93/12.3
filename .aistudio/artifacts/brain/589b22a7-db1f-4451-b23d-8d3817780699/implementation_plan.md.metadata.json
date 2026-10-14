@@ -1,6 +1,6 @@
 {
-  "summary": "Plano de implementação concluído com sucesso: botão de temporada atual com toggle de desmarcar mantendo o mesmo rótulo/estilo, cabeçalho de músicas unificado sem duplicações, e proteção do total de episódios no modo gerenciar temporadas.",
-  "updatedAt": "2026-10-14T16:21:55.417280541Z",
+  "summary": "Implementação concluída: calibração dos títulos de Elenco e Músicas na Ficha Técnica para caberem em uma única linha e redesenho minimalista do Modal da Engrenagem com zero containers aninhados, fundo preto puro e botões amplos de ação direta.",
+  "updatedAt": "2026-10-14T16:49:46.431367842Z",
   "requestFeedback": true,
   "userFacing": true
 }

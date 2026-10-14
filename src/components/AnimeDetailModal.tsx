@@ -1757,9 +1757,9 @@ export const AnimeDetailModal: React.FC<AnimeDetailModalProps> = ({
           {/* TAB 3: PERSONAGENS */}
           {activeTab === 'characters' && (
             <div className="space-y-3 animate-in fade-in duration-150">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
-                <Users className="w-4 h-4 text-indigo-400" />
-                <span>Personagens Principais & Dubladores (Seiyuus)</span>
+              <h4 className="text-[11px] sm:text-xs font-bold uppercase tracking-tight sm:tracking-wider text-slate-300 flex items-center gap-1.5 truncate whitespace-nowrap">
+                <Users className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+                <span className="truncate">Personagens Principais & Dubladores (Seiyuus)</span>
               </h4>
 
               {loadingPortalExtras ? (
@@ -1811,18 +1811,18 @@ export const AnimeDetailModal: React.FC<AnimeDetailModalProps> = ({
           {activeTab === 'music' && (
             <div className="space-y-4 animate-in fade-in duration-150">
               <div className="flex items-center justify-between gap-2 flex-wrap">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-300 flex items-center gap-1.5">
-                  <Music className="w-3.5 h-3.5 text-purple-400" />
-                  <span>Músicas Oficiais (Aberturas & Encerramentos)</span>
+                <h4 className="text-[11px] sm:text-xs font-bold uppercase tracking-tight sm:tracking-wider text-zinc-300 flex items-center gap-1.5 truncate whitespace-nowrap min-w-0">
+                  <Music className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+                  <span className="truncate">Músicas Oficiais (Aberturas & Encerramentos)</span>
                 </h4>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5 shrink-0">
                   {mediaThemes.length > 0 && (
-                    <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-black text-indigo-300 border border-indigo-500/30 font-bold">
+                    <span className="text-[9.5px] px-2 py-0.5 rounded-full bg-black text-indigo-300 border border-indigo-500/30 font-bold">
                       AnimeThemes HD
                     </span>
                   )}
                   {mediaThemes.some((t) => t.videoUrl || t.audioUrl) && (
-                    <span className="text-[10px] text-purple-300/80 font-medium">
+                    <span className="text-[9.5px] text-purple-300/80 font-medium">
                       Toque para ouvir
                     </span>
                   )}

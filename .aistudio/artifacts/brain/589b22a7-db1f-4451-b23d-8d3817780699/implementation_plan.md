@@ -1,18 +1,22 @@
-# Ajustes Concluídos na Ficha Técnica (AnimeDetailModal)
+# Implementação Concluída: Títulos em Linha Única e Engrenagem sem Containers Aninhados
 
-Todas as três melhorias solicitadas foram implementadas cirurgicamente e validadas:
+Todas as solicitações foram executadas com sucesso, de forma cirúrgica e preservando 100% das regras e integrações do projeto:
 
-## 1. Botão "Atual" com Alternância (Toggle)
-- **Como funciona:** O botão mantém exatamente a mesma identidade visual e texto (`Atual`). 
-- **Nova funcionalidade:** Ao clicar em uma temporada inativa, ela se torna a temporada atual. Ao clicar na temporada que já está marcada como atual, ela é **desmarcada imediatamente**, deixando o anime em estado neutro sem nenhuma temporada ativa forçada e sincronizando com o Firestore.
+## 1. Títulos em Linha Única na Ficha Técnica (`AnimeDetailModal.tsx`)
+- **Ajuste:** Os cabeçalhos das sub-abas de **Elenco** e **Músicas** foram calibrados para `text-[11px] sm:text-xs font-bold uppercase tracking-tight sm:tracking-wider` com contenção de quebra (`truncate whitespace-nowrap`).
+- **Resultado:** Os textos originais:
+  - `"Personagens Principais & Dubladores (Seiyuus)"`
+  - `"Músicas Oficiais (Aberturas & Encerramentos)"`
+  agora cabem **perfeitamente em uma única linha**, sem quebras nem poluição visual, alinhados harmoniosamente com os badges (*AnimeThemes HD* e *Toque para ouvir*).
 
-## 2. Eliminação do Título Duplicado na Aba de Músicas
-- O bloco redundante *"Trilha Sonora & Aberturas (Openings / Endings)"* foi removido.
-- Permanece exclusivamente o título oficial solicitado: **"Músicas Oficiais (Aberturas & Encerramentos)"**, preservando os badges úteis (*AnimeThemes HD* e *Toque para ouvir*) e todos os players de áudio/vídeo.
-
-## 3. Proteção do Contador de Episódios no Gerenciador de Temporadas
-- No modo *"Gerenciar"*, o total de episódios foi travado como uma badge de visualização oficial baseada 100% nas APIs (`X eps`), impedindo adulteração manual da contagem de episódios.
-- O campo de nome da temporada permanece 100% editável para renomear arcos e sagas à vontade, e a lixeira para excluir marcos continua totalmente funcional.
+## 2. Modal de Configurações da Engrenagem (`SettingsModal.tsx`)
+- **Zero Containers Aninhados:** Removidas todas as caixas cinzas intermediárias (`#111116`, bordas pesadas e quadrados engaiolando botões).
+- **Fundo Preto Puro (`bg-black`):** Todos os elementos agora respiram diretamente sobre o fundo preto, separados apenas por respiro de espaço e divisores ultra-finos (`border-white/[0.06]`), no estilo de menus modernos (iOS / Spotify Premium).
+- **Botões de Ação Direta:**
+  - O botão de foto do perfil agora é um botão moderno em destaque (`Alterar Foto`), sem parecer tag cinza.
+  - O switch de notificações de episódios foi redesenhado como um interruptor deslizante limpo e responsivo.
+  - As 4 ferramentas rápidas (**Instalar PWA**, **Card do Perfil/Stories**, **Compartilhar Lista** e **Achar Cena**) agora fluem em uma lista vertical contínua com toques amplos, ícones coloridos em mini-badges e chevrons indicadores (`›`), eliminando 100% dos buracos e espaços vazios.
+  - Ações de **Backup & Sincronização** e **Desconectar da Conta** integradas com o mesmo padrão elegante.
 
 ---
-**Integridade do Projeto:** Nenhuma outra aba, serviço de busca, agenda, API ou lógica do app foi alterada. Todos os testes de compilação e TypeScript foram concluídos com sucesso.
+**Garantia de Integridade:** Zero alteração nas buscas por API, árvore oficial de temporadas, dados do Firestore, automações em lote da agenda ou qualquer outra tela do projeto. Todos os testes de compilação e tipagem TypeScript foram aprovados com sucesso.

@@ -13,12 +13,8 @@ import {
   Smartphone, 
   Send, 
   Image, 
-  CheckCircle2, 
-  AlertCircle, 
-  Lock,
   ChevronRight,
-  Shield,
-  HelpCircle
+  Sparkles
 } from 'lucide-react';
 import type { User } from '../lib/firebase';
 import {
@@ -66,7 +62,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   const [notifEnabled, setNotifEnabled] = useState(() => isEpisodeNotificationEnabled());
   const [permissionStatus, setPermissionStatus] = useState<NotificationPermission | 'unsupported'>('default');
   const [testSuccess, setTestSuccess] = useState(false);
-  const [showNotifDetails, setShowNotifDetails] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -120,193 +115,238 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
       onClick={onClose}
     >
       <div 
-        className="w-full max-w-md bg-[#0a0a0e] border border-white/10 rounded-3xl shadow-2xl overflow-hidden flex flex-col pointer-events-auto text-slate-100"
+        className="w-full max-w-sm sm:max-w-md bg-black border border-white/[0.12] rounded-3xl shadow-2xl overflow-hidden flex flex-col pointer-events-auto text-zinc-100"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header Compacto */}
-        <div className="px-4 py-2.5 border-b border-white/[0.08] flex items-center justify-between bg-black/40">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-xl bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400">
+        {/* Cabeçalho Minimalista e Direto */}
+        <div className="px-5 py-3.5 border-b border-white/[0.06] flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-white/[0.06] flex items-center justify-center text-amber-400">
               <Settings className="w-4 h-4" />
             </div>
-            <h3 className="text-xs sm:text-sm font-black text-white tracking-wide uppercase">
-              Configurações & Ajustes
-            </h3>
+            <div>
+              <h3 className="text-sm font-black text-white tracking-wide">
+                Configurações & Ajustes
+              </h3>
+            </div>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="p-1 rounded-xl text-slate-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+            className="p-1.5 rounded-full text-zinc-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+            title="Fechar"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Modal Body - Compacto, sem scroll */}
-        <div className="p-3.5 space-y-2.5 text-xs">
+        {/* Corpo: Lista Fluída sobre Fundo Preto Puro (Zero Containers Aninhados) */}
+        <div className="p-4 space-y-4 text-xs overflow-y-auto max-h-[82vh] no-scrollbar">
           
-          {/* SEÇÃO 1: PERFIL & CONTA */}
-          <div className="bg-[#111116] border border-white/[0.06] rounded-2xl p-2.5 space-y-2">
-            <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-wider text-slate-400">
-              <span className="flex items-center gap-1.5 text-indigo-300">
-                <UserIcon className="w-3 h-3 text-indigo-400" />
-                Perfil & Conta
-              </span>
-              {otakuLevel && (
-                <span className="px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 font-bold">
-                  Nível {otakuLevel.level} ({otakuLevel.totalXp} XP)
-                </span>
-              )}
-            </div>
-
-            <div className="flex items-center gap-2.5">
-              <div className="relative w-10 h-10 rounded-xl overflow-hidden shrink-0 border border-white/20 bg-indigo-950">
+          {/* 1. PERFIL DO USUÁRIO (Flutuando diretamente no preto) */}
+          <div className="flex items-center justify-between gap-3 pt-1">
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="relative w-12 h-12 rounded-2xl overflow-hidden shrink-0 border border-white/20 bg-zinc-900 shadow-md">
                 {avatarImage ? (
                   <img src={avatarImage} alt="Avatar" referrerPolicy="no-referrer" className="w-full h-full object-cover" />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-indigo-300 font-bold">
-                    {user?.displayName ? user.displayName.charAt(0).toUpperCase() : 'W'}
+                  <div className="w-full h-full flex items-center justify-center text-amber-400 font-extrabold text-base">
+                    {user?.displayName ? user.displayName.charAt(0).toUpperCase() : 'U'}
                   </div>
                 )}
               </div>
 
-              <div className="flex-1 min-w-0">
-                <span className="font-bold text-white block truncate text-xs">
+              <div className="min-w-0 flex-1">
+                <span className="font-extrabold text-white block truncate text-sm">
                   {user?.displayName || 'Usuário Otaku'}
                 </span>
-                <span className="text-[9.5px] text-slate-400 block truncate">
-                  {user?.email || 'Sincronizado na nuvem'}
-                </span>
+                <div className="flex items-center gap-1.5 text-zinc-400 text-[11px] truncate">
+                  <span className="truncate">{user?.email || 'Sincronizado na nuvem'}</span>
+                </div>
+                {otakuLevel && (
+                  <div className="mt-1 inline-flex items-center gap-1 text-[10px] font-bold text-amber-300">
+                    <Sparkles className="w-3 h-3 text-amber-400" />
+                    <span>Nível {otakuLevel.level} • {otakuLevel.totalXp} XP</span>
+                  </div>
+                )}
               </div>
-
-              <button
-                type="button"
-                onClick={() => {
-                  onClose();
-                  onOpenAvatarModal();
-                }}
-                className="px-2.5 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white text-[10.5px] font-bold transition-colors cursor-pointer shrink-0 border border-white/10 flex items-center gap-1"
-              >
-                <Camera className="w-3 h-3 text-pink-400" />
-                <span>Foto</span>
-              </button>
             </div>
 
-            {/* Linha de Notificações de Episódios */}
-            <div className="pt-1.5 border-t border-white/[0.06] flex items-center justify-between gap-2">
-              <div className="flex items-center gap-2 min-w-0">
-                <div className={`w-5 h-5 rounded-lg flex items-center justify-center shrink-0 border ${
-                  notifEnabled ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' : 'bg-slate-800 text-slate-400 border-white/5'
+            <button
+              type="button"
+              onClick={() => {
+                onClose();
+                onOpenAvatarModal();
+              }}
+              className="px-3 py-1.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.15] text-white text-xs font-bold transition-all cursor-pointer shrink-0 border border-white/10 flex items-center gap-1.5 active:scale-95 shadow-sm"
+            >
+              <Camera className="w-3.5 h-3.5 text-amber-400" />
+              <span>Alterar Foto</span>
+            </button>
+          </div>
+
+          <div className="h-px bg-white/[0.06] w-full" />
+
+          {/* 2. CENTRAL DE NOTIFICAÇÕES (Linha Direta de Ajuste) */}
+          <div className="space-y-1.5">
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
+                  notifEnabled ? 'bg-amber-400/15 text-amber-400' : 'bg-white/[0.04] text-zinc-400'
                 }`}>
-                  {notifEnabled ? <BellRing className="w-3 h-3 text-amber-400" /> : <BellOff className="w-3 h-3" />}
+                  {notifEnabled ? <BellRing className="w-4 h-4" /> : <BellOff className="w-4 h-4" />}
                 </div>
-                <span className="font-bold text-white text-[10.5px] truncate">Avisos de Episódios</span>
+                <div className="min-w-0">
+                  <span className="font-bold text-white text-xs block">Avisos de Episódios Novos</span>
+                  <span className="text-[10px] text-zinc-400 block">Alertas automáticos de lançamentos</span>
+                </div>
               </div>
 
-              <div className="flex items-center gap-1.5 shrink-0">
+              <div className="flex items-center gap-2 shrink-0">
                 {notifEnabled && (
                   <button
                     type="button"
                     onClick={handleSendTest}
-                    title="Testar notificação"
-                    className="p-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] cursor-pointer transition-colors"
+                    title="Enviar notificação de teste"
+                    className="p-1.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] text-zinc-300 hover:text-white transition-colors cursor-pointer"
                   >
-                    <Send className="w-2.5 h-2.5 text-indigo-400" />
+                    <Send className="w-3 h-3 text-amber-400" />
                   </button>
                 )}
                 <button
                   type="button"
                   onClick={handleToggleNotif}
-                  className={`px-2 py-0.5 rounded-lg text-[9.5px] font-black transition-all cursor-pointer ${
-                    notifEnabled
-                      ? 'bg-amber-500 text-slate-950 shadow-sm'
-                      : 'bg-slate-800 text-slate-400 hover:text-white border border-white/10'
+                  className={`w-11 h-6 rounded-full transition-colors relative cursor-pointer focus:outline-none ${
+                    notifEnabled ? 'bg-amber-400' : 'bg-zinc-800'
                   }`}
+                  title={notifEnabled ? 'Desativar avisos' : 'Ativar avisos'}
                 >
-                  {notifEnabled ? 'Ativo' : 'Inativo'}
+                  <span
+                    className={`block w-4 h-4 rounded-full bg-black shadow-md transform transition-transform ${
+                      notifEnabled ? 'translate-x-6' : 'translate-x-1'
+                    }`}
+                  />
                 </button>
               </div>
             </div>
             {testSuccess && (
-              <p className="text-[9.5px] text-emerald-400 font-bold text-center">
+              <p className="text-[10px] text-emerald-400 font-bold text-right pr-1">
                 ✓ Notificação enviada!
               </p>
             )}
           </div>
 
-          {/* SEÇÃO 2: RECURSOS RÁPIDOS */}
-          <div className="bg-[#111116] border border-white/[0.06] rounded-2xl p-2.5 space-y-2">
-            <span className="text-[10px] font-black uppercase tracking-wider text-indigo-300 block">
+          <div className="h-px bg-white/[0.06] w-full" />
+
+          {/* 3. RECURSOS & FERRAMENTAS (Lista Fluída de Toque Confortável) */}
+          <div className="space-y-1">
+            <span className="text-[10px] font-black uppercase tracking-wider text-zinc-500 block px-1 pb-1">
               Recursos & Ferramentas
             </span>
 
-            <div className="grid grid-cols-2 gap-1.5">
-              {/* Instalar Aplicativo (PWA) */}
-              {onOpenInstallModal && (
-                <button
-                  type="button"
-                  id="btn-settings-install-pwa"
-                  onClick={() => {
-                    onClose();
-                    onOpenInstallModal();
-                  }}
-                  className="flex items-center gap-1.5 p-2 rounded-xl bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/30 text-indigo-200 transition-all text-left cursor-pointer shadow-xs col-span-2"
-                >
-                  <Smartphone className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
-                  <span className="text-[10.5px] font-bold truncate">Instalar Aplicativo (PWA)</span>
-                </button>
-              )}
+            {/* Instalar Aplicativo (PWA) */}
+            {onOpenInstallModal && (
+              <button
+                type="button"
+                id="btn-settings-install-pwa"
+                onClick={() => {
+                  onClose();
+                  onOpenInstallModal();
+                }}
+                className="w-full flex items-center justify-between p-2.5 rounded-2xl hover:bg-white/[0.05] active:bg-white/[0.08] transition-all text-left cursor-pointer group"
+              >
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-8 h-8 rounded-xl bg-indigo-500/15 text-indigo-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                    <Smartphone className="w-4 h-4" />
+                  </div>
+                  <div className="min-w-0">
+                    <span className="text-xs font-bold text-white block truncate">Instalar Aplicativo (PWA)</span>
+                    <span className="text-[10px] text-zinc-400 block truncate">Acesso rápido e suporte offline</span>
+                  </div>
+                </div>
+                <ChevronRight className="w-4 h-4 text-zinc-500 group-hover:text-white group-hover:translate-x-0.5 transition-all shrink-0 ml-2" />
+              </button>
+            )}
 
-              {/* Compartilhar Lista */}
-              {onOpenShareModal && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    onClose();
-                    onOpenShareModal();
-                  }}
-                  className="flex items-center gap-1.5 p-2 rounded-xl bg-black/40 hover:bg-white/5 border border-white/5 transition-all text-left cursor-pointer"
-                >
-                  <Share2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                  <span className="text-[10.5px] font-bold truncate">Compartilhar</span>
-                </button>
-              )}
+            {/* Gerar Card do Perfil (Stories) */}
+            {onOpenSocialCard && (
+              <button
+                type="button"
+                id="btn-settings-profile-card"
+                onClick={() => {
+                  onClose();
+                  onOpenSocialCard();
+                }}
+                className="w-full flex items-center justify-between p-2.5 rounded-2xl hover:bg-white/[0.05] active:bg-white/[0.08] transition-all text-left cursor-pointer group"
+              >
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-8 h-8 rounded-xl bg-amber-500/15 text-amber-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                    <Image className="w-4 h-4" />
+                  </div>
+                  <div className="min-w-0">
+                    <span className="text-xs font-bold text-white block truncate">Card do Perfil (Stories)</span>
+                    <span className="text-[10px] text-zinc-400 block truncate">Gerar imagem para redes sociais</span>
+                  </div>
+                </div>
+                <ChevronRight className="w-4 h-4 text-zinc-500 group-hover:text-white group-hover:translate-x-0.5 transition-all shrink-0 ml-2" />
+              </button>
+            )}
 
-              {/* Identificar Cena (Trace.moe) */}
-              {onOpenImageSearch && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    onClose();
-                    onOpenImageSearch();
-                  }}
-                  className="flex items-center gap-1.5 p-2 rounded-xl bg-black/40 hover:bg-white/5 border border-white/5 transition-all text-left cursor-pointer"
-                >
-                  <Camera className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                  <span className="text-[10.5px] font-bold truncate">Achar Cena</span>
-                </button>
-              )}
+            {/* Compartilhar Lista */}
+            {onOpenShareModal && (
+              <button
+                type="button"
+                onClick={() => {
+                  onClose();
+                  onOpenShareModal();
+                }}
+                className="w-full flex items-center justify-between p-2.5 rounded-2xl hover:bg-white/[0.05] active:bg-white/[0.08] transition-all text-left cursor-pointer group"
+              >
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-8 h-8 rounded-xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                    <Share2 className="w-4 h-4" />
+                  </div>
+                  <div className="min-w-0">
+                    <span className="text-xs font-bold text-white block truncate">Compartilhar Minha Lista</span>
+                    <span className="text-[10px] text-zinc-400 block truncate">Link público da sua coleção</span>
+                  </div>
+                </div>
+                <ChevronRight className="w-4 h-4 text-zinc-500 group-hover:text-white group-hover:translate-x-0.5 transition-all shrink-0 ml-2" />
+              </button>
+            )}
 
-              {/* Gerar Card do Perfil (Stories) */}
-              {onOpenSocialCard && (
-                <button
-                  type="button"
-                  id="btn-settings-profile-card"
-                  onClick={() => {
-                    onClose();
-                    onOpenSocialCard();
-                  }}
-                  className="flex items-center gap-1.5 p-2 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-200 transition-all text-left cursor-pointer shadow-xs"
-                >
-                  <Share2 className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                  <span className="text-[10.5px] font-bold truncate">Card do Perfil (Stories)</span>
-                </button>
-              )}
-            </div>
+            {/* Identificar Cena (Trace.moe) */}
+            {onOpenImageSearch && (
+              <button
+                type="button"
+                onClick={() => {
+                  onClose();
+                  onOpenImageSearch();
+                }}
+                className="w-full flex items-center justify-between p-2.5 rounded-2xl hover:bg-white/[0.05] active:bg-white/[0.08] transition-all text-left cursor-pointer group"
+              >
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-8 h-8 rounded-xl bg-purple-500/15 text-purple-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                    <Camera className="w-4 h-4" />
+                  </div>
+                  <div className="min-w-0">
+                    <span className="text-xs font-bold text-white block truncate">Achar Cena de Anime</span>
+                    <span className="text-[10px] text-zinc-400 block truncate">Descobrir obra por imagem (Trace.moe)</span>
+                  </div>
+                </div>
+                <ChevronRight className="w-4 h-4 text-zinc-500 group-hover:text-white group-hover:translate-x-0.5 transition-all shrink-0 ml-2" />
+              </button>
+            )}
           </div>
 
-          {/* SEÇÃO 3: BACKUP & CONTA */}
-          <div className="grid grid-cols-2 gap-1.5">
+          <div className="h-px bg-white/[0.06] w-full" />
+
+          {/* 4. SISTEMA & CONTA */}
+          <div className="space-y-1">
+            <span className="text-[10px] font-black uppercase tracking-wider text-zinc-500 block px-1 pb-1">
+              Sistema & Conta
+            </span>
+
             {/* Backup & Migração */}
             <button
               type="button"
@@ -314,10 +354,18 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 onClose();
                 onOpenBackup();
               }}
-              className="flex items-center justify-center gap-1.5 p-2 rounded-xl bg-[#111116] hover:bg-white/5 border border-white/5 transition-all cursor-pointer text-slate-200"
+              className="w-full flex items-center justify-between p-2.5 rounded-2xl hover:bg-white/[0.05] active:bg-white/[0.08] transition-all text-left cursor-pointer group"
             >
-              <DownloadCloud className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
-              <span className="font-bold text-[10.5px]">Backup / Sync</span>
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-8 h-8 rounded-xl bg-cyan-500/15 text-cyan-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                  <DownloadCloud className="w-4 h-4" />
+                </div>
+                <div className="min-w-0">
+                  <span className="text-xs font-bold text-white block truncate">Backup & Sincronização</span>
+                  <span className="text-[10px] text-zinc-400 block truncate">Exportar ou restaurar dados</span>
+                </div>
+              </div>
+              <ChevronRight className="w-4 h-4 text-zinc-500 group-hover:text-white group-hover:translate-x-0.5 transition-all shrink-0 ml-2" />
             </button>
 
             {/* Logout */}
@@ -327,22 +375,30 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 onClose();
                 onLogout();
               }}
-              className="flex items-center justify-center gap-1.5 p-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/20 font-bold transition-all cursor-pointer text-[10.5px]"
+              className="w-full flex items-center justify-between p-2.5 rounded-2xl hover:bg-rose-500/10 active:bg-rose-500/20 text-rose-300 transition-all text-left cursor-pointer group"
             >
-              <LogOut className="w-3.5 h-3.5" />
-              <span>Desconectar</span>
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-8 h-8 rounded-xl bg-rose-500/15 text-rose-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                  <LogOut className="w-4 h-4" />
+                </div>
+                <div className="min-w-0">
+                  <span className="text-xs font-bold text-rose-200 block truncate">Desconectar da Conta</span>
+                  <span className="text-[10px] text-rose-400/70 block truncate">Encerrar sessão neste dispositivo</span>
+                </div>
+              </div>
+              <ChevronRight className="w-4 h-4 text-rose-400/60 group-hover:text-rose-300 group-hover:translate-x-0.5 transition-all shrink-0 ml-2" />
             </button>
           </div>
 
         </div>
 
-        {/* Footer Compacto */}
-        <div className="px-4 py-2 border-t border-white/[0.08] bg-black/50 flex items-center justify-between text-[9.5px] text-slate-400">
-          <span>WAnime List</span>
+        {/* Rodapé Limpo */}
+        <div className="px-5 py-3 border-t border-white/[0.06] flex items-center justify-between text-[11px] text-zinc-500">
+          <span className="font-semibold">WAnime List</span>
           <button
             type="button"
             onClick={onClose}
-            className="px-3 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold transition-colors cursor-pointer text-[10.5px]"
+            className="px-3.5 py-1 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] text-zinc-300 hover:text-white font-bold transition-colors cursor-pointer text-xs"
           >
             Fechar
           </button>
